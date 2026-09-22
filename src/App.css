@@ -1,3 +1,43 @@
+:root {
+  --bg-primary: #080a0f;
+  --bg-secondary: #0c0f15;
+  --bg-card: #0e1118;
+  --bg-card-hover: #11151d;
+
+  --text-primary: #f5f7fa;
+  --text-secondary: #9ca3af;
+  --text-muted: #737b88;
+
+  --border: #252a34;
+  --border-light: #30343e;
+
+  --accent: #6393ff;
+  --accent-soft: #18243f;
+
+  --button-bg: #ffffff;
+  --button-text: #080a0f;
+}
+
+body.light-theme {
+  --bg-primary: #f7f9fc;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5fb;
+
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+
+  --border: #e2e7ef;
+  --border-light: #d5dce7;
+
+  --accent: #356fe5;
+  --accent-soft: #eaf1ff;
+
+  --button-bg: #111827;
+  --button-text: #ffffff;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -9,14 +49,25 @@ html {
 body {
   margin: 0;
   font-family:
-    Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #080a0f;
-  color: #f5f7fa;
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button {
+  font-family: inherit;
 }
 
 .app {
@@ -29,7 +80,9 @@ a {
   margin: 0 auto;
 }
 
-/* Navbar */
+/* =========================
+   Navbar
+========================= */
 
 .navbar {
   position: absolute;
@@ -59,7 +112,7 @@ a {
 .nav-links {
   display: flex;
   gap: 32px;
-  color: #a5aab5;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -68,28 +121,73 @@ a {
 }
 
 .nav-links a:hover {
-  color: #fff;
+  color: var(--text-primary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 17px;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  transform: rotate(12deg);
 }
 
 .nav-button {
   padding: 11px 18px;
-  border: 1px solid #30343e;
+  border: 1px solid var(--border-light);
   border-radius: 8px;
-  background: #11141b;
+  background: var(--bg-card);
+  color: var(--text-primary);
   font-size: 13px;
   font-weight: 600;
+  transition: 0.2s ease;
 }
 
-/* Hero */
+.nav-button:hover {
+  border-color: var(--accent);
+}
+
+/* =========================
+   Hero
+========================= */
 
 .hero {
   position: relative;
   min-height: 760px;
   padding: 170px 0 100px;
   background:
-    radial-gradient(circle at 75% 45%, rgba(62, 120, 255, 0.15), transparent 32%),
-    radial-gradient(circle at 25% 20%, rgba(60, 90, 255, 0.08), transparent 30%),
-    #080a0f;
+    radial-gradient(
+      circle at 75% 45%,
+      rgba(62, 120, 255, 0.15),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 25% 20%,
+      rgba(60, 90, 255, 0.08),
+      transparent 30%
+    ),
+    var(--bg-primary);
 }
 
 .hero-content {
@@ -104,10 +202,10 @@ a {
   align-items: center;
   gap: 9px;
   padding: 8px 13px;
-  border: 1px solid #252b37;
+  border: 1px solid var(--border);
   border-radius: 30px;
-  background: #10131a;
-  color: #aeb4c0;
+  background: var(--bg-card);
+  color: var(--text-secondary);
   font-size: 12px;
   margin-bottom: 25px;
 }
@@ -122,19 +220,20 @@ a {
 
 .hero h1 {
   margin: 0;
+  color: var(--text-primary);
   font-size: clamp(54px, 6vw, 82px);
   line-height: 0.98;
   letter-spacing: -4px;
 }
 
 .hero h1 span {
-  color: #6393ff;
+  color: var(--accent);
 }
 
 .hero-text > p {
   max-width: 580px;
   margin: 28px 0;
-  color: #9ca3af;
+  color: var(--text-secondary);
   font-size: 18px;
   line-height: 1.7;
 }
@@ -157,13 +256,13 @@ a {
 }
 
 .primary-button {
-  background: #fff;
-  color: #080a0f;
+  background: var(--button-bg);
+  color: var(--button-text);
 }
 
 .secondary-button {
-  border: 1px solid #30343e;
-  color: #d9dde5;
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
 }
 
 .hero-trust {
@@ -179,15 +278,18 @@ a {
 }
 
 .hero-trust strong {
+  color: var(--text-primary);
   font-size: 21px;
 }
 
 .hero-trust span {
-  color: #777f8d;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
-/* Ranking visual */
+/* =========================
+   Ranking Visual
+========================= */
 
 .hero-visual {
   position: relative;
@@ -208,10 +310,10 @@ a {
   position: relative;
   width: 430px;
   padding: 25px;
-  border: 1px solid #292f3a;
+  border: 1px solid var(--border);
   border-radius: 18px;
-  background: rgba(16, 19, 27, 0.92);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  background: var(--bg-card);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
 }
 
 .ranking-header {
@@ -221,13 +323,14 @@ a {
 }
 
 .small-label {
-  color: #687181;
+  color: var(--text-muted);
   font-size: 10px;
   letter-spacing: 1.5px;
 }
 
 .ranking-header h3 {
   margin: 5px 0 0;
+  color: var(--text-primary);
   font-size: 21px;
 }
 
@@ -237,8 +340,8 @@ a {
   display: grid;
   place-items: center;
   border-radius: 9px;
-  background: #18243f;
-  color: #6d9aff;
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .search-box {
@@ -247,9 +350,9 @@ a {
   gap: 10px;
   margin: 25px 0 15px;
   padding: 13px;
-  border: 1px solid #282e38;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: #6d7480;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
@@ -258,11 +361,11 @@ a {
   align-items: center;
   gap: 14px;
   padding: 15px 0;
-  border-bottom: 1px solid #222731;
+  border-bottom: 1px solid var(--border);
 }
 
 .rank-number {
-  color: #668ff2;
+  color: var(--accent);
   font-weight: 700;
   font-size: 12px;
 }
@@ -275,11 +378,12 @@ a {
 }
 
 .business-info strong {
+  color: var(--text-primary);
   font-size: 13px;
 }
 
 .business-info span {
-  color: #717986;
+  color: var(--text-muted);
   font-size: 10px;
 }
 
@@ -291,7 +395,7 @@ a {
   display: flex;
   justify-content: space-between;
   padding-top: 18px;
-  color: #737b88;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
@@ -307,10 +411,10 @@ a {
   align-items: center;
   gap: 12px;
   padding: 14px 18px;
-  border: 1px solid #29303b;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  background: #11151d;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  background: var(--bg-card);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
 .floating-card > span {
@@ -324,20 +428,23 @@ a {
 }
 
 .floating-card strong {
+  color: var(--text-primary);
   font-size: 17px;
 }
 
 .floating-card small {
-  color: #747c89;
+  color: var(--text-muted);
   font-size: 10px;
 }
 
-/* Stats */
+/* =========================
+   Stats
+========================= */
 
 .stats {
-  border-top: 1px solid #20242c;
-  border-bottom: 1px solid #20242c;
-  background: #0c0f15;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
 }
 
 .stats-grid {
@@ -347,7 +454,7 @@ a {
 
 .stats-grid div {
   padding: 35px 20px;
-  border-right: 1px solid #20242c;
+  border-right: 1px solid var(--border);
   text-align: center;
 }
 
@@ -361,20 +468,23 @@ a {
 }
 
 .stats-grid strong {
+  color: var(--text-primary);
   font-size: 28px;
 }
 
 .stats-grid span {
   margin-top: 6px;
-  color: #737b88;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
-/* Services */
+/* =========================
+   Services
+========================= */
 
 .services {
   padding: 120px 0;
-  background: #080a0f;
+  background: var(--bg-primary);
 }
 
 .section-heading {
@@ -383,7 +493,7 @@ a {
 }
 
 .section-heading > span {
-  color: #668ff2;
+  color: var(--accent);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -391,18 +501,19 @@ a {
 
 .section-heading h2 {
   margin: 15px 0;
+  color: var(--text-primary);
   font-size: clamp(38px, 5vw, 58px);
   line-height: 1.05;
   letter-spacing: -2px;
 }
 
 .section-heading h2 em {
-  color: #6d94ed;
+  color: var(--accent);
   font-style: normal;
 }
 
 .section-heading p {
-  color: #7f8794;
+  color: var(--text-secondary);
   line-height: 1.7;
 }
 
@@ -414,17 +525,19 @@ a {
 
 .service-card {
   padding: 28px;
-  border: 1px solid #252a34;
+  border: 1px solid var(--border);
   border-radius: 14px;
-  background: #0e1118;
+  background: var(--bg-card);
   transition:
     transform 0.25s ease,
-    border-color 0.25s ease;
+    border-color 0.25s ease,
+    background 0.3s ease;
 }
 
 .service-card:hover {
   transform: translateY(-5px);
-  border-color: #3d5f9e;
+  border-color: var(--accent);
+  background: var(--bg-card-hover);
 }
 
 .service-icon {
@@ -433,36 +546,43 @@ a {
   display: grid;
   place-items: center;
   margin-bottom: 50px;
-  border: 1px solid #303746;
+  border: 1px solid var(--border-light);
   border-radius: 10px;
-  background: #151a25;
-  color: #7198f0;
+  background: var(--accent-soft);
+  color: var(--accent);
   font-size: 20px;
 }
 
 .service-card h3 {
   margin: 0 0 12px;
+  color: var(--text-primary);
   font-size: 17px;
 }
 
 .service-card p {
   min-height: 75px;
-  color: #777f8c;
+  color: var(--text-secondary);
   font-size: 13px;
   line-height: 1.7;
 }
 
 .service-card a {
-  color: #7198f0;
+  color: var(--accent);
   font-size: 12px;
   font-weight: 600;
 }
 
-/* Responsive */
+/* =========================
+   Responsive
+========================= */
 
 @media (max-width: 900px) {
   .nav-links {
     display: none;
+  }
+
+  .nav-actions {
+    margin-left: auto;
   }
 
   .hero-content {
@@ -481,6 +601,23 @@ a {
 @media (max-width: 600px) {
   .container {
     width: min(100% - 28px, 1180px);
+  }
+
+  .navbar {
+    padding: 18px 0;
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+
+  .nav-button {
+    display: none;
+  }
+
+  .theme-toggle {
+    width: 38px;
+    height: 38px;
   }
 
   .hero {
@@ -517,7 +654,7 @@ a {
   }
 
   .stats-grid div {
-    border-bottom: 1px solid #20242c;
+    border-bottom: 1px solid var(--border);
   }
 
   .service-grid {

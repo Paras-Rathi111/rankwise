@@ -1,6 +1,24 @@
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
+  const [isLight, setIsLight] = useState(() => {
+    return localStorage.getItem('rankwise-theme') === 'light'
+  })
+
+  useEffect(() => {
+    document.body.classList.toggle('light-theme', isLight)
+
+    localStorage.setItem(
+      'rankwise-theme',
+      isLight ? 'light' : 'dark'
+    )
+  }, [isLight])
+
+  const toggleTheme = () => {
+    setIsLight((current) => !current)
+  }
+
   return (
     <div className="app">
       {/* Navbar */}
@@ -18,9 +36,28 @@ function App() {
             <a href="#faq">FAQ</a>
           </nav>
 
-          <a href="#contact" className="nav-button">
-            Free SEO Audit
-          </a>
+          <div className="nav-actions">
+            <button
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={
+                isLight
+                  ? 'Switch to dark mode'
+                  : 'Switch to light mode'
+              }
+              title={
+                isLight
+                  ? 'Switch to dark mode'
+                  : 'Switch to light mode'
+              }
+            >
+              {isLight ? '☾' : '☀'}
+            </button>
+
+            <a href="#contact" className="nav-button">
+              Free SEO Audit
+            </a>
+          </div>
         </div>
       </header>
 
@@ -97,15 +134,18 @@ function App() {
 
                 <div className="ranking-item">
                   <div className="rank-number">01</div>
+
                   <div className="business-info">
                     <strong>Your Business</strong>
                     <span>★★★★★ 4.9 · Local Business</span>
                   </div>
+
                   <div className="rank-up">↑</div>
                 </div>
 
                 <div className="ranking-item second">
                   <div className="rank-number">02</div>
+
                   <div className="business-info">
                     <strong>Competitor</strong>
                     <span>★★★★☆ 4.6 · Local Business</span>
@@ -114,6 +154,7 @@ function App() {
 
                 <div className="ranking-item third">
                   <div className="rank-number">03</div>
+
                   <div className="business-info">
                     <strong>Competitor</strong>
                     <span>★★★★☆ 4.5 · Local Business</span>
@@ -128,6 +169,7 @@ function App() {
 
               <div className="floating-card">
                 <span>↗</span>
+
                 <div>
                   <strong>+42%</strong>
                   <small>Visibility</small>
@@ -167,11 +209,13 @@ function App() {
           <div className="container">
             <div className="section-heading">
               <span>WHAT WE DO</span>
+
               <h2>
                 Everything you need to
                 <br />
                 <em>get found locally.</em>
               </h2>
+
               <p>
                 Build a stronger local presence and turn nearby searches into
                 real customers.
@@ -181,41 +225,53 @@ function App() {
             <div className="service-grid">
               <div className="service-card">
                 <div className="service-icon">◎</div>
+
                 <h3>Google Maps SEO</h3>
+
                 <p>
                   Improve your visibility in Google Maps and local search
                   results.
                 </p>
+
                 <a href="#contact">Learn more →</a>
               </div>
 
               <div className="service-card">
                 <div className="service-icon">⌕</div>
+
                 <h3>Local SEO</h3>
+
                 <p>
                   Optimize your online presence for customers searching in
                   your area.
                 </p>
+
                 <a href="#contact">Learn more →</a>
               </div>
 
               <div className="service-card">
                 <div className="service-icon">★</div>
+
                 <h3>Reputation Management</h3>
+
                 <p>
                   Build trust with a stronger review profile and customer
                   reputation.
                 </p>
+
                 <a href="#contact">Learn more →</a>
               </div>
 
               <div className="service-card">
                 <div className="service-icon">↗</div>
+
                 <h3>SEO Audit</h3>
+
                 <p>
                   Find the problems holding your local visibility back and
                   identify growth opportunities.
                 </p>
+
                 <a href="#contact">Learn more →</a>
               </div>
             </div>
