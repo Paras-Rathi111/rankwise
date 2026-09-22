@@ -40,7 +40,7 @@ function App() {
     setAuditLoading(true)
 
     try {
-      const response = await fetch('http://localhost:5001/api/audit', {
+      const response = await fetch('https://rankwise-api-pvv8.onrender.com/api/audit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
