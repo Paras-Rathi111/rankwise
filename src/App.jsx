@@ -6,6 +6,11 @@ function App() {
     return localStorage.getItem('rankwise-theme') === 'light'
   })
 
+  const [website, setWebsite] = useState('')
+  const [auditLoading, setAuditLoading] = useState(false)
+  const [auditError, setAuditError] = useState('')
+  const [auditResult, setAuditResult] = useState(null)
+
   useEffect(() => {
     document.body.classList.toggle('light-theme', isLight)
 
@@ -17,6 +22,57 @@ function App() {
 
   const toggleTheme = () => {
     setIsLight((current) => !current)
+  }
+
+  const runAudit = async (event) => {
+    event.preventDefault()
+
+    setAuditError('')
+    setAuditResult(null)
+
+    const trimmedWebsite = website.trim()
+
+    if (!trimmedWebsite) {
+      setAuditError('Please enter your website URL.')
+      return
+    }
+
+    setAuditLoading(true)
+
+    try {
+      const response = await fetch('http://localhost:5001/api/audit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          website: trimmedWebsite,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.message || 'Unable to complete the audit.'
+        )
+      }
+
+      setAuditResult(data)
+    } catch (error) {
+      setAuditError(
+        error.message ||
+          'Unable to connect to the Rankwise audit server.'
+      )
+    } finally {
+      setAuditLoading(false)
+    }
+  }
+
+  const getScoreClass = (score) => {
+    if (score >= 80) return 'score-good'
+    if (score >= 60) return 'score-medium'
+    return 'score-low'
   }
 
   return (
@@ -61,8 +117,8 @@ function App() {
         </div>
       </header>
 
-      {/* Hero */}
       <main>
+        {/* Hero */}
         <section className="hero">
           <div className="container hero-content">
             <div className="hero-text">
@@ -272,8 +328,169 @@ function App() {
                   identify growth opportunities.
                 </p>
 
-                <a href="#contact">Learn more →</a>
+                <a href="#contact">Run free audit →</a>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Free SEO Audit */}
+        <section className="audit-section" id="contact">
+          <div className="container">
+            <div className="audit-card">
+              <div className="audit-intro">
+                <span className="audit-label">FREE SEO AUDIT</span>
+
+                <h2>
+                  See how your website
+                  <br />
+                  <em>is performing.</em>
+                </h2>
+
+                <p>
+                  Enter your website and Rankwise will analyze important SEO
+                  signals and show you what is working and what needs
+                  improvement.
+                </p>
+              </div>
+
+              <form className="audit-form" onSubmit={runAudit}>
+                <label htmlFor="website">
+                  Website URL
+                </label>
+
+                <div className="audit-input-row">
+                  <input
+                    id="website"
+                    type="text"
+                    placeholder="https://yourwebsite.com"
+                    value={website}
+                    onChange={(event) =>
+                      setWebsite(event.target.value)
+                    }
+                  />
+
+                  <button
+                    type="submit"
+                    className="audit-submit"
+                    disabled={auditLoading}
+                  >
+                    {auditLoading ? 'Analyzing...' : 'Analyze Website'}
+                    {!auditLoading && <span>→</span>}
+                  </button>
+                </div>
+
+                {auditError && (
+                  <div className="audit-error">
+                    {auditError}
+                  </div>
+                )}
+              </form>
+
+              {auditResult && (
+                <div className="audit-results">
+                  <div className="audit-results-header">
+                    <div>
+                      <span className="small-label">
+                        AUDIT RESULTS
+                      </span>
+
+                      <h3>{auditResult.website}</h3>
+                    </div>
+
+                    <div
+                      className={`audit-score ${getScoreClass(
+                        auditResult.score
+                      )}`}
+                    >
+                      <strong>{auditResult.score}</strong>
+                      <span>/100</span>
+                    </div>
+                  </div>
+
+                  <div className="audit-summary">
+                    <div>
+                      <strong>
+                        {auditResult.summary.passed}
+                      </strong>
+                      <span>Passed</span>
+                    </div>
+
+                    <div>
+                      <strong>
+                        {auditResult.summary.warnings}
+                      </strong>
+                      <span>Warnings</span>
+                    </div>
+
+                    <div>
+                      <strong>
+                        {auditResult.summary.failed}
+                      </strong>
+                      <span>Failed</span>
+                    </div>
+                  </div>
+
+                  <div className="audit-checks">
+                    {auditResult.checks.map((check) => (
+                      <div
+                        className="audit-check"
+                        key={check.name}
+                      >
+                        <div className="audit-check-name">
+                          <span
+                            className={`check-status ${check.status}`}
+                          >
+                            {check.status === 'pass'
+                              ? '✓'
+                              : check.status === 'warning'
+                                ? '!'
+                                : '×'}
+                          </span>
+
+                          <strong>{check.name}</strong>
+                        </div>
+
+                        <p>{check.message}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="audit-page-details">
+                    <h4>Page Details</h4>
+
+                    <div className="page-detail-grid">
+                      <div>
+                        <span>H1 Headings</span>
+                        <strong>
+                          {auditResult.page.h1Count}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>Images</span>
+                        <strong>
+                          {auditResult.page.images}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>Images Without Alt</span>
+                        <strong>
+                          {auditResult.page.imagesWithoutAlt}
+                        </strong>
+                      </div>
+
+                      <div>
+                        <span>Structured Data</span>
+                        <strong>
+                          {auditResult.page.structuredData}
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
