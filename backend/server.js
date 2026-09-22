@@ -4,7 +4,7 @@ const axios = require('axios')
 const cheerio = require('cheerio')
 
 const app = express()
-const PORT = 5001
+const PORT = process.env.PORT || 5001
 
 app.use(cors())
 app.use(express.json())
@@ -205,8 +205,8 @@ app.post('/api/audit', async (req, res) => {
   }
 })
 
-app.listen(PORT, () => {
-  console.log(
-    `Rankwise Audit API running on http://localhost:${PORT}`
-  )
+const HOST = '0.0.0.0'
+
+app.listen(PORT, HOST, () => {
+  console.log(`Rankwise Audit API running on port ${PORT}`)
 })
