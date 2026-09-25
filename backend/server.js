@@ -205,6 +205,67 @@ app.post('/api/audit', async (req, res) => {
   }
 })
 
+// ===============================
+// OpenStreetMap Business Search
+// ===============================
+
+app.post('/api/search-places', async (req, res) => {
+  try {
+    const { query } = req.body
+
+    if (!query || !query.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Search query is required',
+      })
+    }
+
+    const searchQuery = query.trim()
+
+    const response = await axios.get(
+      'https://nominatim.openstreetmap.org/search',
+      {
+        params: {
+          q: searchQuery,
+          format: 'jsonv2',
+          addressdetails: 1,
+          limit: 5,
+          'accept-language': 'en',
+        },
+
+        headers: {
+          'User-Agent': 'Rankwise/1.0 (SEO business search)',
+        },
+
+        timeout: 10000,
+      }
+    )
+
+    const places = response.data.map((place) => ({
+      id: place.place_id,
+      name: place.name || place.display_name.split(',')[0],
+      address: place.display_name,
+      latitude: place.lat,
+      longitude: place.lon,
+      type: place.type,
+      category: place.category,
+    }))
+
+    res.json({
+      success: true,
+      places,
+      attribution: '© OpenStreetMap contributors',
+    })
+  } catch (error) {
+    console.error('Place search error:', error.message)
+
+    res.status(500).json({
+      success: false,
+      message: 'Unable to search businesses right now.',
+    })
+  }
+})
+
 const HOST = '0.0.0.0'
 
 app.listen(PORT, HOST, () => {
